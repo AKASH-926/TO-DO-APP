@@ -7,8 +7,9 @@ import { useEffect } from 'react'
 export default function Todo() {
     const [task, settask] = useState({ work: "" })
     const [data, setdata] = useState([])
+    const [toggle, settoggle] = useState(true)
     const [reload, setreaload] = useState(true)
-
+    const [uid, setuid] = useState("")
     useEffect(() => {
         axios.get("http://localhost:8080/api").then((response) => {
             setdata([...response.data.todo])
@@ -21,9 +22,10 @@ export default function Todo() {
     }, [reload])
     const handlepost = async () => {
         await axios.post("http://localhost:8080/api", task).then((response) => {
-            console.log(response)
             setreaload(!reload)
+
         })
+        settask({ ...task, work: "" })
     }
 
     const handledelete = async (id) => {
@@ -33,10 +35,24 @@ export default function Todo() {
             console.log(error)
         })
     }
-    const handleupdate = async (id) => {
-        console.log(id)
+    const handle_edit = async (id) => {
+        await axios.get(`http://localhost:8080/api/${id}`).then((response) => {
+            settask({ ...task, work: response.data.todo.work })
+            setuid(id)
+            settoggle(false)
+        }).catch((error) => {
+            console.log(error)
+        })
     }
-
+    const handleupdate = async () => {
+        await axios.put(`http://localhost:8080/api/${uid}`, task).then((response) => {
+            setreaload(!reload)
+            settoggle(true)
+            settask({ ...task, work: "" })
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
     return (
         <>
             <div>
@@ -44,7 +60,7 @@ export default function Todo() {
                     <input type="text" name="field" id="feild" value={task.work} onChange={(e) => {
                         settask({ ...task, work: e.target.value })
                     }} />
-                    <button onClick={handlepost}>ADD</button>
+                    {toggle ? <button onClick={handlepost}>ADD</button> : <button onClick={handleupdate}>UPDATE</button>}
                 </div>
                 <div id='task-wrapper' >
                     <table>
@@ -55,7 +71,7 @@ export default function Todo() {
                                     return (
                                         <tr id='row-wrap' key={i}>
                                             <td id='task'>{value.work}</td>
-                                            <td><button onClick={() => { handleupdate(value._id) }}>EDIT</button></td>
+                                            <td><button onClick={() => { handle_edit(value._id) }}>EDIT</button></td>
                                             <td><button onClick={() => { handledelete(value._id) }}>DELETE</button></td>
                                         </tr>
                                     )

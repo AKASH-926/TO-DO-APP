@@ -18,6 +18,21 @@ todoRoute.get("/api", async (req, res) => {
         })
     }
 })
+todoRoute.get("/api/:id", async (req, res) => {
+    try {
+        const todo = await TodoDB.findOne({ _id: req.params.id })
+        res.status(200).json({
+            status: "Fetched",
+            todo: todo
+
+        })
+    } catch (e) {
+        res.status(400).json({
+            status: "failed to fetch",
+            message: e.message
+        })
+    }
+})
 todoRoute.post("/api", async (req, res) => {
     try {
         const todo = await TodoDB.create({ work: req.body.work, date: Date.now() })

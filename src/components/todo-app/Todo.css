@@ -1,0 +1,19 @@
+#input-wrapper{
+    display: flex;
+    justify-content: center;
+    margin-top: 3%;
+}
+#task-wrapper{
+    display: flex;
+    justify-content: center;
+    margin-top: 3%;
+}
+#row-wrap{
+    display: flex;
+    justify-content: center;
+   
+}
+#task{
+ width: 300px;
+ text-align: start;
+}

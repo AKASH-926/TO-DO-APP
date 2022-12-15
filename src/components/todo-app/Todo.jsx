@@ -11,7 +11,7 @@ export default function Todo() {
     const [reload, setreaload] = useState(true)
     const [uid, setuid] = useState("")
     useEffect(() => {
-        axios.get("http://localhost:8080/api").then((response) => {
+        axios.get("https://todo-api-88p9.onrender.com/api").then((response) => {
             setdata([...response.data.todo])
 
 
@@ -24,7 +24,7 @@ export default function Todo() {
         if (task.work === "") {
             return alert("ENTER THE TASK TO ADD")
         }
-        await axios.post("http://localhost:8080/api", task).then((response) => {
+        await axios.post("https://todo-api-88p9.onrender.com/api", task).then((response) => {
             setreaload(!reload)
 
         })
@@ -35,14 +35,14 @@ export default function Todo() {
 
         let confirm = (window.confirm("ARE YOU SURE?"))
         if (confirm == false) return
-        await axios.delete(`http://localhost:8080/api/${id}`).then((response) => {
+        await axios.delete(`https://todo-api-88p9.onrender.com/api/${id}`).then((response) => {
             setreaload(!reload)
         }).catch((error) => {
             console.log(error)
         })
     }
     const handle_edit = async (id) => {
-        await axios.get(`http://localhost:8080/api/${id}`).then((response) => {
+        await axios.get(`https://todo-api-88p9.onrender.com/api/${id}`).then((response) => {
             settask({ ...task, work: response.data.todo.work })
             setuid(id)
             settoggle(false)
@@ -54,7 +54,7 @@ export default function Todo() {
         if (task.work === "") {
             return alert("EDITED TASK CANNOT BE EMPTY")
         }
-        await axios.put(`http://localhost:8080/api/${uid}`, task).then((response) => {
+        await axios.put(`https://todo-api-88p9.onrender.com/api/${uid}`, task).then((response) => {
             setreaload(!reload)
             settoggle(true)
             settask({ ...task, work: "" })

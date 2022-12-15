@@ -21,6 +21,9 @@ export default function Todo() {
 
     }, [reload])
     const handlepost = async () => {
+        if (task.work === "") {
+            return alert("ENTER THE TASK TO ADD")
+        }
         await axios.post("http://localhost:8080/api", task).then((response) => {
             setreaload(!reload)
 
@@ -45,6 +48,9 @@ export default function Todo() {
         })
     }
     const handleupdate = async () => {
+        if (task.work === "") {
+            return alert("EDITED TASK CANNOT BE EMPTY")
+        }
         await axios.put(`http://localhost:8080/api/${uid}`, task).then((response) => {
             setreaload(!reload)
             settoggle(true)
@@ -56,11 +62,14 @@ export default function Todo() {
     return (
         <>
             <div>
+                <div id='heading'>
+                    <h1>TO-DO's</h1>
+                </div>
                 <div id='input-wrapper'>
-                    <input type="text" name="field" id="feild" value={task.work} onChange={(e) => {
+                    <input placeholder='Enter your task here' type="text" name="field" id="feild" value={task.work} onChange={(e) => {
                         settask({ ...task, work: e.target.value })
                     }} />
-                    {toggle ? <button onClick={handlepost}>ADD</button> : <button onClick={handleupdate}>UPDATE</button>}
+                    {toggle ? <button className='task_butn' onClick={handlepost}><img src='/add.png' alt='edit' /></button> : <button className='task_butn' onClick={handleupdate}><img src='/update.png' alt='edit' /></button>}
                 </div>
                 <div id='task-wrapper' >
                     <table>
@@ -70,9 +79,9 @@ export default function Todo() {
                                 data.map((value, i) => {
                                     return (
                                         <tr id='row-wrap' key={i}>
-                                            <td id='task'>{value.work}</td>
-                                            <td><button onClick={() => { handle_edit(value._id) }}>EDIT</button></td>
-                                            <td><button onClick={() => { handledelete(value._id) }}>DELETE</button></td>
+                                            <td id='task'>{i + 1}. {value.work} <span id='date'> || Date- [{value.date.split("T")[0]}]</span> </td>
+                                            <td className='butn'><button className='edit_delete_butn' onClick={() => { handle_edit(value._id) }}> <img src='/edit.png' alt='edit' /> </button></td>
+                                            <td className='butn'><button className='edit_delete_butn' onClick={() => { handledelete(value._id) }}><img src='/delete.png' alt='edit' /></button></td>
                                         </tr>
                                     )
                                 })

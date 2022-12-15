@@ -34,7 +34,7 @@ export default function Todo() {
     const handledelete = async (id) => {
 
         let confirm = (window.confirm("ARE YOU SURE?"))
-        if (confirm == false) return
+        if (confirm === false) return
         await axios.delete(`https://todo-api-88p9.onrender.com/api/${id}`).then((response) => {
             setreaload(!reload)
         }).catch((error) => {

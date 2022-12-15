@@ -12,7 +12,7 @@
 }
 #feild{
     height: 35px;
-    width: 380px;
+    width: 320px;
     text-transform: uppercase;
     font-size: larger;
     transition: 112ms;
@@ -89,7 +89,7 @@ margin-right: 17%;
 .butn{
  display: flex;
     justify-content: flex-end;
-    width: 6%;
+    width: 50px;
     transition: 112ms;
     
 }
